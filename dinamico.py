@@ -1,12 +1,9 @@
-"""
-Modelo de força dinâmica (espaço de estados) para gols no Brasileirão.
-
-  gols_casa ~ Poisson(exp(mu + h + eta_H[casa] + A[casa,k] - D[fora,l]))
-  gols_fora ~ Poisson(exp(mu +                  A[fora,l] - D[casa,k]))
-
-  A[i,k] = ataque do time i no seu k-ésimo jogo ;  D[i,k] = qualidade defensiva
-  A[i,0] ~ N(0,tau^2),  A[i,k]-A[i,k-1] ~ N(0,sigma^2)     (passeio aleatório por jogo)
-  idem para D; eta_H[i] ~ N(0,s_h^2) (mando específico, encolhido); mu, h ~ priors vagos.
+"""Modelo de força dinâmica (espaço de estados) para gols no Brasileirão.
+gols_casa ~ Poisson(exp(mu + h + eta_H[casa] + A[casa,k] - D[fora,l]))
+gols_fora ~ Poisson(exp(mu +                  A[fora,l] - D[casa,k]))
+A[i,k] = ataque do time i no seu k-ésimo jogo ;  D[i,k] = qualidade defensiva
+A[i,0] ~ N(0,tau^2),  A[i,k]-A[i,k-1] ~ N(0,sigma^2)     (passeio aleatório por jogo)
+idem para D; eta_H[i] ~ N(0,s_h^2) (mando específico, encolhido); mu, h ~ priors vagos.
 
 Inferência: moda a posteriori (Newton-Raphson esparso) + aproximação de Laplace
 (covariância = inverso da Hessiana). Hiperparâmetros escolhidos por validação walk-forward.

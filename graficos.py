@@ -1,6 +1,5 @@
-
 """
-Gera os gráficos da análise a partir dos resultados das simulações.
+gera os gráficos da análise a partir dos resultados das simulações.
 Os arquivos são salvos na pasta resultados/.
 """
 
@@ -22,8 +21,8 @@ ALVO = [
     "Internacional",
     "Corinthians",
     "Grêmio",
-    "Vitória",
     "Mirassol",
+    "Botafogo",
 ]
 
 # Cores usadas para identificar cada equipe nos gráficos
@@ -33,6 +32,7 @@ COR = {
     "Grêmio": "#0066B3",         
     "Vitória": "#E87524",        
     "Mirassol": "#F2C500",
+    "Botafogo": "#9A9A9A",
 }
 
 # Configuração visual
@@ -50,6 +50,10 @@ plt.rcParams.update({
     "xtick.color": SEC,
     "ytick.color": SEC,
 })
+
+
+# Botafogo: cinza com hachura preto e branco
+ESTILO_BARRA = {"Botafogo": dict(hatch="///", edgecolor="#000000", linewidth=0.8)}
 
 
 def limpar_eixos(ax):
@@ -82,6 +86,7 @@ for i, time in enumerate(ordem):
         prob * 100,
         color=COR[time],
         height=0.5,
+        **ESTILO_BARRA.get(time, {}),
     )
 
     # Faixa de variação entre as hipóteses estruturais
@@ -112,7 +117,7 @@ ax.xaxis.grid(True, color=GRID)
 ax.set_axisbelow(True)
 
 ax.set_title(
-    "Chance de permanência na Série A — 1 milhão de campeonatos simulados",
+    "Chance de permanência na Série A simulada 1 milhão de vezes",
     loc="left",
     fontsize=12,
     fontweight="bold",
@@ -121,7 +126,7 @@ ax.set_title(
 fig.text(
     0.01,
     0.01,
-    "Linha preta: menor e maior valor entre 16 hipóteses estruturais "
+    f"Linha preta: menor e maior valor entre {R.get('n_hipoteses', 16)} hipóteses estruturais "
     "(incerteza do modelo, não do Monte Carlo).",
     fontsize=8,
     color=SEC,
@@ -173,14 +178,14 @@ ax.set_xticklabels([
 
 ax.set_xlim(-0.3, len(nomes) + 1.6)
 ax.set_xlabel(
-    "Camada do modelo (0 = base estática; 7 = modelo completo)"
+    f"Camada do modelo (0 = base estática; {len(nomes) - 1} = modelo completo)"
 )
 ax.set_ylabel("Permanência (%)")
 
 ax.yaxis.grid(True, color=GRID)
 
 ax.set_title(
-    "O que cada camada de sofisticação muda na probabilidade",
+    "O que cada camada muda na probabilidade",
     loc="left",
     fontsize=12,
     fontweight="bold",
@@ -197,8 +202,8 @@ central = np.array(sensibilidade[0][1])
 
 fig, axs = plt.subplots(
     1,
-    5,
-    figsize=(14, 6.2),
+    len(ALVO),
+    figsize=(16, max(6.2, 0.3 * len(sensibilidade) + 1.6)),
     dpi=160,
     sharey=True,
 )
@@ -219,6 +224,7 @@ for j, (ax, time) in enumerate(zip(axs, ALVO)):
         variacao,
         color=COR[time],
         height=0.6,
+        **ESTILO_BARRA.get(time, {}),
     )
 
     ax.axvline(0, color=INK, lw=0.8)
@@ -238,7 +244,7 @@ axs[0].invert_yaxis()
 
 fig.suptitle(
     "Sensibilidade: o quanto cada hipótese estrutural "
-    "move a chance de queda (vs. modelo central)",
+    "move a chance de queda.",
     x=0.01,
     ha="left",
     fontsize=12,
@@ -254,6 +260,7 @@ plt.close(fig)
 fig, ax = plt.subplots(figsize=(9.5, 5), dpi=160)
 limpar_eixos(ax)
 
+rotulos = []
 for time in ALVO:
     probabilidades = np.array(R["posicao"][time]) * 100
 
@@ -269,10 +276,17 @@ for time in ALVO:
 
     # Identifica a posição mais provável de cada equipe
     posicao_mais_provavel = int(probabilidades.argmax())
+    rotulos.append([posicao_mais_provavel + 1, probabilidades[posicao_mais_provavel] + 0.9, time])
 
+# Afasta rótulos que ficariam um em cima do outro (picos na mesma região)
+colocados = []
+for x, y, time in sorted(rotulos, key=lambda r: -r[1]):
+    while any(abs(x - xc) < 1.6 and abs(y - yc) < 2.6 for xc, yc in colocados):
+        y += 3.0
+    colocados.append((x, y))
     ax.text(
-        posicao_mais_provavel + 1,
-        probabilidades[posicao_mais_provavel] + 0.9,
+        x,
+        y,
         time,
         color=INK,
         fontsize=9,
@@ -288,8 +302,8 @@ ax.axvspan(
 )
 
 ax.text(
-    18.5,
-    ax.get_ylim()[1] * 0.93,
+    19.5,
+    ax.get_ylim()[1] * 0.5,
     "Z4",
     color=SEC,
     ha="center",

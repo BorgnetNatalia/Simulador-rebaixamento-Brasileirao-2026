@@ -1,4 +1,4 @@
-"""Leitura e validação da base de partidas (353 jogos) contra a classificação oficial."""
+"""Le e valida base de partidas contra a classificação oficial."""
 import re, datetime as dt
 from collections import defaultdict
 

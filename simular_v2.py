@@ -32,9 +32,6 @@ ALVO = ["Internacional", "Corinthians", "Grêmio", "Mirassol", "Botafogo"]
 # (mandante, visitante, estágio)  estágio 1 = restante da 36ª, 2 = 37ª, 3 = 38ª
 RESTANTES = [
     
-    
-    
-    ("São Paulo", "Remo", 2), ("Fluminense", "Cruzeiro", 2),
     ("Botafogo", "Bahia", 2), ("Coritiba", "Flamengo", 2), ("Vitória", "Santos", 2),
     ("Corinthians", "Grêmio", 2), ("Mirassol", "Athletico-PR", 2), ("Internacional", "Bragantino", 2),
     ("Atlético-MG", "Vasco", 2),

@@ -1,5 +1,5 @@
 """
-Estudo histórico do "desespero" Brasileirão Série A, 2006 a 2024.
+Estudo histórico do "desespero" Brasileirão Série A, 2006 a 2025.
 
 Pergunta: times com muito em jogo rendem MAIS do que o modelo de força previa?
 
@@ -26,9 +26,12 @@ import numpy as np
 from scipy.special import gammaln
 from dinamico import Base, ajustar, indices_finais
 
-URL = "https://raw.githubusercontent.com/adaoduque/Brasileirao_Dataset/master/campeonato-brasileiro-full.csv"
+# Base histórica 2003-2025, no formato do Brasileirao_Dataset (github.com/adaoduque), que vai só até 2024;
+# 2025 veio das súmulas da CBF. O arquivo fica na raiz do repositório; se faltar, é baixado de lá.
+URL = "https://raw.githubusercontent.com/BorgnetNatalia/Simulador-rebaixamento-Brasileirao-2026/main/campeonato-brasileiro-full.csv"
+PRIMEIRA, ULTIMA = 2006, 2025      # temporadas do estudo (a que está sendo simulada fica de fora)
 _ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
-CSV = _ARGS[0] if _ARGS else "dados_historicos/campeonato-brasileiro-full.csv"
+CSV = _ARGS[0] if _ARGS else "campeonato-brasileiro-full.csv"
 RODADAS = range(29, 39)
 M_SIM = 20000
 LIMIARES_TOPO = (1, 4, 6)
@@ -38,16 +41,22 @@ LIMIARES_VIVO = (1, 4, 5, 6, 7, 8, 12, 16)   # título, G4–G8 (vagas variaram 
 def ler(caminho):
     if not os.path.exists(caminho):
         os.makedirs(os.path.dirname(caminho) or ".", exist_ok=True)
-        urllib.request.urlretrieve(URL, caminho)
+        try:
+            urllib.request.urlretrieve(URL, caminho)
+        except Exception as erro:
+            raise SystemExit(f"Não achei {caminho} e não consegui baixar de {URL} ({erro}).")
     jogos = []
     for r in csv.DictReader(open(caminho, encoding="utf-8")):
         d, m, y = map(int, r["data"].split("/"))
         temp = 2020 if (y == 2021 and m <= 3) else y          # temporada 2020 terminou em fev/2021
-        if temp < 2006: continue
+        if not PRIMEIRA <= temp <= ULTIMA: continue
         jogos.append(dict(id=int(r["ID"]), temp=temp, rodada=int(r["rodata"]), data=dt.date(y, m, d),
                           casa=r["mandante"].strip(), fora=r["visitante"].strip(),
                           gc=int(r["mandante_Placar"]), gv=int(r["visitante_Placar"]),
                           tc=r["tecnico_mandante"].strip(), tf=r["tecnico_visitante"].strip()))
+    if ULTIMA not in {g["temp"] for g in jogos}:
+        raise SystemExit(f"{caminho} vai só até {max(g['temp'] for g in jogos)}: use o campeonato-brasileiro-full.csv "
+                         f"novo, com {ULTIMA} (o do Brasileirao_Dataset original vai só até 2024).")
     jogos.sort(key=lambda g: (g["data"], g["id"]))
     return jogos
 
@@ -160,6 +169,7 @@ def montar_observacoes():
     for o in obs:
         a = chave[(o["jogo"], "fora" if o["lado"] == "casa" else "casa")]
         for v in ("S", "S_emp", "T", "Sto", "M", "G", "Gc", "N", "esperado"): o[v + "_adv"] = a[v]
+    os.makedirs("resultados", exist_ok=True)
     with open("resultados/historico_covariaveis.csv", "w", newline="", encoding="utf-8") as f:
         wr = csv.DictWriter(f, fieldnames=list(obs[0].keys())); wr.writeheader(); wr.writerows(obs)
     return obs
@@ -190,7 +200,12 @@ ESPEC = {
 
 if __name__ == "__main__":
     t0 = time.time()
-    obs = ler_observacoes() if ("--reusar" in sys.argv and os.path.exists("resultados/historico_covariaveis.csv")) else montar_observacoes()
+    obs = ler_observacoes() if ("--reusar" in sys.argv and os.path.exists("resultados/historico_covariaveis.csv")) else None
+    if obs is not None and max(o["temp"] for o in obs) < ULTIMA:
+        print(f"historico_covariaveis.csv vai só até {max(o['temp'] for o in obs):.0f}: refazendo as simulações")
+        obs = None
+    if obs is None:
+        obs = montar_observacoes()
     print(f"{len(obs)} observações (clube-jogo) em {time.time() - t0:.0f}s")
     col = lambda v: np.array([o[v] for o in obs], float)
     y = col("gols"); off = np.log(col("esperado")); casa = np.array([o["lado"] == "casa" for o in obs], float)

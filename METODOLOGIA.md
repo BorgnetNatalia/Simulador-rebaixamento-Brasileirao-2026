@@ -53,34 +53,36 @@ com o desespero ligado até convergir (**ponto fixo de expectativas racionais**;
 **Efeito nos gols** (log da média de gols):
 log λ_clube += β_S·S + β_T·T + β_ST·S·T (próprio)  +  γ_S·S_adv + γ_T·T_adv + γ_ST·S_adv·T_adv (adversário).
 
-**Calibração (versão B, principal) `estudo_desespero.py`.** Base histórica: Série A 2006–2024 (19 temporadas, 20 clubes, 4 rebaixados),
-rodadas 29 a 38, 3.682 clube-jogos. Para cada temporada e rodada: ajusta-se o mesmo modelo dinâmico só com os jogos anteriores,
+**Calibração (versão B, principal) `estudo_desespero.py`.** Base histórica: Série A 2006–2025 (20 temporadas, 20 clubes, 4 rebaixados),
+rodadas 29 a 38, 3.860 clube-jogos (2006–2024 do Brasileirao_Dataset; 2025 das súmulas da CBF, no mesmo formato). Para cada temporada e rodada: ajusta-se o mesmo modelo dinâmico só com os jogos anteriores,
 simula o restante 20 mil vezes **sem** motivação nenhuma, calculam-se S e T de cada clube e guarda-se o placar real.
 Depois, regressão de Poisson com *offset* = gols esperados pelo modelo, controles de calibração (log dos gols esperados) e de
 "jogo morto", erros-padrão robustos agrupados por rodada. Coeficientes da especificação principal (EP):
 
 | efeito | nos gols marcados | nos gols sofridos |
 |---|---|---|
-| S | −0,34 (0,22) | −0,81 (0,24) |
-| T | −0,18 (0,09) | +0,15 (0,07) |
-| S×T | +1,10 (0,43) | +0,86 (0,50) |
+| S | −0,39 (0,22) | −0,75 (0,24) |
+| T | −0,18 (0,08) | +0,13 (0,07) |
+| S×T | +1,23 (0,42) | +0,78 (0,49) |
 
 Leitura: o valor do jogo **fecha a defesa** (o clube sofre bem menos gols); a ameaça sem esperança (T alto, S baixo) **piora**
 o clube; e o desespero de verdade (S e T altos juntos) melhora ataque e defesa. Teste de razão de verossimilhança das
-quatro variáveis S/T: p ≈ 0,0001; o resultado se mantém em 2006–2014 e 2015–2024 separadamente, nas rodadas 34–38 e com
-erro agrupado por temporada; um teste placebo (embaralhando o S do adversário dentro da rodada, 200 vezes) não reproduz o efeito.
+quatro variáveis S/T: p ≈ 0,00005. O teste conjunto dos seis termos dá p ≈ 0,002 em 2006–2014, p ≈ 0,03 em 2015–2025 e
+p ≈ 0,06 só nas rodadas 34–38; com erro agrupado por temporada, S×T segue com z ≈ 3,2; um teste placebo (embaralhando o S
+do adversário dentro da rodada, 200 vezes) não reproduz o efeito.
 Em cada campeonato simulado os coeficientes são sorteados da normal estimada (incerteza da estimativa propagada).
-O "jogo morto" passa a usar o efeito estimado (≈ −0,01 nos gols marcados e +0,05 nos sofridos) no lugar da premissa δ.
+O "jogo morto" passa a usar o efeito estimado (≈ 0,00 nos gols marcados e +0,08 nos sofridos) no lugar da premissa δ.
 
-**Hipóteses testadas e não confirmadas pelos dados:** reação depois de goleada (perder por 3+ gols: −0,12 nos gols marcados no jogo
-seguinte, EP 0,07; goleada em casa: +0,02, EP 0,16) e efeito de técnico novo nos 3 primeiros jogos (2014–2024: −0,14, EP 0,07;
-dado de técnico tem ruído de grafia e interinos). Ambos entram só como sensibilidade.
+**Hipóteses testadas e não confirmadas pelos dados:** reação depois de goleada (perder por 3+ gols: −0,13 nos gols marcados no jogo
+seguinte, EP 0,07; goleada em casa: +0,16, EP 0,15) e efeito de técnico novo nos 3 primeiros jogos (2014–2025: −0,15, EP 0,07,
+ou seja, nada de reação com técnico novo: se algo, o time rende um pouco abaixo do previsto; o dado de técnico tem ruído de
+grafia e interinos). Ambos entram só como sensibilidade.
 
 **Versão A (a priori, para comparação):** κ·S no ataque e na defesa, κ ~ N⁺(0,10; 0,06).
 
 ## 9 Limites
 Não modela lesões/suspensões específicas, arbitragem, clima, nem possíveis punições do STJD. Se ligado, o desespero é um efeito **médio**
-de 19 temporadas: não captura a personalidade de um elenco ou de um técnico específico. O controle de calibração do estudo
+de 20 temporadas: não captura a personalidade de um elenco ou de um técnico específico. O controle de calibração do estudo
 histórico (o modelo-base exagera um pouco as diferenças de força no fim da temporada) não é aplicado no simulador.
 Probabilidades são estimativas condicionais às premissas, não previsões garantidas. Intervalo de Monte Carlo ≈ ±0,1 p.p.;
 a incerteza estrutural (16 hipóteses; 21 com o desespero ligado) é maior: veja `03_sensibilidade.png`.

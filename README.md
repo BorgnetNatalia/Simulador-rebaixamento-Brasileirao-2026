@@ -42,8 +42,10 @@ python analise_v2.py --desespero
 python graficos_desespero.py
 ```
 
-Usa `resultados/coef_desespero.json`, já incluso. Para refazer a estimativa com os dados históricos (baixados automaticamente):
-`python estudo_desespero.py`
+Usa `resultados/coef_desespero.json`, já incluso (estimado com 2006–2025). Para refazer a estimativa, cerca de 1 minuto:
+`python estudo_desespero.py`. A base histórica é o `campeonato-brasileiro-full.csv` (2003–2025), na raiz do repositório:
+2003–2024 vêm do [Brasileirao_Dataset](https://github.com/adaoduque/Brasileirao_Dataset) e 2025 das súmulas da CBF
+(extraídas pelo [BrazilianFootball/Data](https://github.com/BrazilianFootball/Data)).
 
 ## Arquivos
 
@@ -59,6 +61,7 @@ Usa `resultados/coef_desespero.json`, já incluso. Para refazer a estimativa com
 | `graficos.py` | gráficos 01 a 04 |
 | `backtest3.py` | validação dos hiperparâmetros (opcional, demorado) |
 | `estudo_desespero.py`, `graficos_desespero.py` | camada opcional de desespero |
+| `campeonato-brasileiro-full.csv` | base histórica 2003–2025, usada só pela camada de desespero |
 
 
 ## Aviso

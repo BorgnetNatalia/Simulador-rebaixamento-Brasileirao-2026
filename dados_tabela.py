@@ -6,7 +6,7 @@ Atualizado em 27/11/2026.
 TABELA = {
     "Flamengo":      dict(pts=80, j=36, gp=74, gc=31),
     "Palmeiras":     dict(pts=74, j=37, gp=64, gc=29),
-    "Cruzeiro":      dict(pts=63, j=37, gp=60, gc=50),
+    "Cruzeiro":      dict(pts=69, j=37, gp=60, gc=50),
     "Fluminense":    dict(pts=63, j=37, gp=57, gc=43),
     "Athletico-PR":  dict(pts=57, j=36, gp=56, gc=47),
     "Bahia":         dict(pts=54, j=36, gp=50, gc=46),
@@ -22,7 +22,7 @@ TABELA = {
     "Grêmio":        dict(pts=41, j=36, gp=40, gc=47),
     "Mirassol":      dict(pts=41, j=36, gp=39, gc=49),
     "Internacional": dict(pts=38, j=36, gp=41, gc=49),
-    "Remo":          dict(pts=32, j=37, gp=42, gc=61),
+    "Remo":          dict(pts=32, j=37, gp=42, gc=64),
     "Chapecoense":   dict(pts=24, j=37, gp=37, gc=74),
 }
 
@@ -52,7 +52,7 @@ CASA = {
 FORA = {
     "Flamengo": (35, 37, 17),
     "Palmeiras": (31, 27, 17),
-    "Cruzeiro": (31, 28, 31),
+    "Cruzeiro": (32, 28, 31),
     "Santos": (25, 28, 28),
     "Bahia": (24, 24, 26),
     "Athletico-PR": (22, 24, 27),
@@ -67,7 +67,7 @@ FORA = {
     "Mirassol": (13, 15, 27),
     "São Paulo": (11, 15, 27),
     "Grêmio": (11, 13, 26),
-    "Remo": (10, 18, 41),
+    "Remo": (10, 18, 42),
     "Vitória": (9, 17, 37),
     "Chapecoense": (7, 11, 34),
 }

@@ -1,20 +1,20 @@
 
 """
 Dados do Brasileirão
-Atualizado em 26/11/2026.
+Atualizado em 27/11/2026.
 """
 TABELA = {
     "Flamengo":      dict(pts=80, j=36, gp=74, gc=31),
     "Palmeiras":     dict(pts=74, j=37, gp=64, gc=29),
-    "Cruzeiro":      dict(pts=66, j=36, gp=59, gc=50),
-    "Fluminense":    dict(pts=63, j=36, gp=57, gc=42),
+    "Cruzeiro":      dict(pts=63, j=37, gp=60, gc=50),
+    "Fluminense":    dict(pts=63, j=37, gp=57, gc=43),
     "Athletico-PR":  dict(pts=57, j=36, gp=56, gc=47),
     "Bahia":         dict(pts=54, j=36, gp=50, gc=46),
     "Atlético-MG":   dict(pts=52, j=36, gp=45, gc=41),
     "Bragantino":    dict(pts=50, j=36, gp=46, gc=41),
     "Santos":        dict(pts=50, j=36, gp=51, gc=51),
     "Vasco":         dict(pts=47, j=36, gp=47, gc=52),
-    "São Paulo":     dict(pts=45, j=36, gp=40, gc=41),
+    "São Paulo":     dict(pts=48, j=37, gp=43, gc=42),
     "Coritiba":      dict(pts=45, j=36, gp=41, gc=52),
     "Vitória":       dict(pts=44, j=36, gp=42, gc=54),
     "Botafogo":      dict(pts=43, j=36, gp=47, gc=58),
@@ -22,19 +22,19 @@ TABELA = {
     "Grêmio":        dict(pts=41, j=36, gp=40, gc=47),
     "Mirassol":      dict(pts=41, j=36, gp=39, gc=49),
     "Internacional": dict(pts=38, j=36, gp=41, gc=49),
-    "Remo":          dict(pts=32, j=36, gp=41, gc=61),
+    "Remo":          dict(pts=32, j=37, gp=42, gc=61),
     "Chapecoense":   dict(pts=24, j=37, gp=37, gc=74),
 }
 
 CASA = {
     "Flamengo": (45, 37, 14),
     "Palmeiras": (43, 37, 12),
-    "Fluminense": (42, 32, 17),
+    "Fluminense": (42, 32, 18),
     "Cruzeiro": (37, 32, 19),
     "Atlético-MG": (36, 28, 19),
     "Vitória": (35, 25, 17),
     "Athletico-PR": (35, 32, 20),
-    "São Paulo": (34, 25, 14),
+    "São Paulo": (37, 28, 15),
     "Bragantino": (33, 30, 18),
     "Vasco": (30, 27, 25),
     "Grêmio": (30, 27, 21),
@@ -52,7 +52,7 @@ CASA = {
 FORA = {
     "Flamengo": (35, 37, 17),
     "Palmeiras": (31, 27, 17),
-    "Cruzeiro": (29, 27, 31),
+    "Cruzeiro": (31, 28, 31),
     "Santos": (25, 28, 28),
     "Bahia": (24, 24, 26),
     "Athletico-PR": (22, 24, 27),
@@ -67,7 +67,7 @@ FORA = {
     "Mirassol": (13, 15, 27),
     "São Paulo": (11, 15, 27),
     "Grêmio": (11, 13, 26),
-    "Remo": (10, 17, 39),
+    "Remo": (10, 18, 41),
     "Vitória": (9, 17, 37),
     "Chapecoense": (7, 11, 34),
 }
@@ -86,20 +86,17 @@ ULT10 = {
     "Atlético-MG": (13, 10, 10),
     "Vitória": (12, 17, 17),
     "Athletico-PR": (12, 18, 19),
-    "São Paulo": (12, 9, 11),
+    "São Paulo": (15, 12, 10),
     "Bahia": (11, 10, 14),
     "Botafogo": (11, 9, 17),
     "Corinthians": (9, 14, 16),
-    "Remo": (9, 11, 18),
+    "Remo": (9, 11, 19),
     "Coritiba": (8, 7, 17),
     "Chapecoense": (6, 8, 21),
 }
-
-# Jogos restantes a partir de 26/11/2026
+# Jogos restantes a partir de 28/11/2026
 JOGOS = [
     # 37ª rodada
-    ("São Paulo", "Remo"),               # 26/11
-    ("Fluminense", "Cruzeiro"),          # 27/11
     ("Botafogo", "Bahia"),               # 28/11
     ("Coritiba", "Flamengo"),            # 29/11
     ("Vitória", "Santos"),               # 29/11
@@ -132,7 +129,7 @@ ALVO = [
 VITORIAS = {
     "Flamengo": 24,
     "Palmeiras": 21,
-    "Cruzeiro": 20,
+    "Cruzeiro": 22,
     "Fluminense": 18,
     "Athletico-PR": 16,
     "Bahia": 14,
@@ -140,7 +137,7 @@ VITORIAS = {
     "Bragantino": 14,
     "Santos": 13,
     "Vasco": 13,
-    "São Paulo": 12,
+    "São Paulo": 14,
     "Coritiba": 12,
     "Vitória": 12,
     "Botafogo": 11,
